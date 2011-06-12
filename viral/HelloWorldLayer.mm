@@ -48,7 +48,7 @@ enum {
 	// always call "super" init
 	// Apple recommends to re-assign "self" with the "super" return value
 	if( (self=[super init])) {
-		
+		     
 		// enable touches
 		self.isTouchEnabled = YES;
 		
