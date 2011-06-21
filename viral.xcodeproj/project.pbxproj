@@ -104,9 +104,6 @@
 		59A072EA13A4AB6600DCC320 /* CDOpenALSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A072E913A4AB6600DCC320 /* CDOpenALSupport.m */; };
 		59A072ED13A4AB6600DCC320 /* CocosDenshion.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A072EC13A4AB6600DCC320 /* CocosDenshion.m */; };
 		59A072F013A4AB6600DCC320 /* SimpleAudioEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A072EF13A4AB6600DCC320 /* SimpleAudioEngine.m */; };
-		59A072F413A4AB6600DCC320 /* CLScoreServerPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A072F313A4AB6600DCC320 /* CLScoreServerPost.m */; };
-		59A072F713A4AB6600DCC320 /* CLScoreServerRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A072F613A4AB6600DCC320 /* CLScoreServerRequest.m */; };
-		59A072FA13A4AB6600DCC320 /* cocoslive.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A072F913A4AB6600DCC320 /* cocoslive.m */; };
 		59A072FE13A4AB6600DCC320 /* FontLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A072FD13A4AB6600DCC320 /* FontLabel.m */; };
 		59A0730113A4AB6600DCC320 /* FontLabelStringDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A0730013A4AB6600DCC320 /* FontLabelStringDrawing.m */; };
 		59A0730413A4AB6600DCC320 /* FontManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A0730313A4AB6600DCC320 /* FontManager.m */; };
@@ -356,12 +353,6 @@
 		59A072EC13A4AB6600DCC320 /* CocosDenshion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CocosDenshion.m; path = libs/CocosDenshion/CocosDenshion.m; sourceTree = "<group>"; };
 		59A072EE13A4AB6600DCC320 /* SimpleAudioEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SimpleAudioEngine.h; path = libs/CocosDenshion/SimpleAudioEngine.h; sourceTree = "<group>"; };
 		59A072EF13A4AB6600DCC320 /* SimpleAudioEngine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SimpleAudioEngine.m; path = libs/CocosDenshion/SimpleAudioEngine.m; sourceTree = "<group>"; };
-		59A072F213A4AB6600DCC320 /* CLScoreServerPost.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CLScoreServerPost.h; path = libs/cocoslive/CLScoreServerPost.h; sourceTree = "<group>"; };
-		59A072F313A4AB6600DCC320 /* CLScoreServerPost.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CLScoreServerPost.m; path = libs/cocoslive/CLScoreServerPost.m; sourceTree = "<group>"; };
-		59A072F513A4AB6600DCC320 /* CLScoreServerRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CLScoreServerRequest.h; path = libs/cocoslive/CLScoreServerRequest.h; sourceTree = "<group>"; };
-		59A072F613A4AB6600DCC320 /* CLScoreServerRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CLScoreServerRequest.m; path = libs/cocoslive/CLScoreServerRequest.m; sourceTree = "<group>"; };
-		59A072F813A4AB6600DCC320 /* cocoslive.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = cocoslive.h; path = libs/cocoslive/cocoslive.h; sourceTree = "<group>"; };
-		59A072F913A4AB6600DCC320 /* cocoslive.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = cocoslive.m; path = libs/cocoslive/cocoslive.m; sourceTree = "<group>"; };
 		59A072FC13A4AB6600DCC320 /* FontLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FontLabel.h; path = libs/FontLabel/FontLabel.h; sourceTree = "<group>"; };
 		59A072FD13A4AB6600DCC320 /* FontLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = FontLabel.m; path = libs/FontLabel/FontLabel.m; sourceTree = "<group>"; };
 		59A072FF13A4AB6600DCC320 /* FontLabelStringDrawing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FontLabelStringDrawing.h; path = libs/FontLabel/FontLabelStringDrawing.h; sourceTree = "<group>"; };
@@ -541,7 +532,6 @@
 				59A071DE13A4AB6400DCC320 /* Resources */,
 				59A071F213A4AB6400DCC320 /* cocos2d */,
 				59A072E313A4AB6600DCC320 /* CocosDenshion */,
-				59A072F113A4AB6600DCC320 /* cocoslive */,
 				59A072FB13A4AB6600DCC320 /* FontLabel */,
 				59A0730C13A4AB6600DCC320 /* TouchJSON */,
 				59A0732513A4AB6600DCC320 /* Box2D */,
@@ -753,19 +743,6 @@
 				59A072EF13A4AB6600DCC320 /* SimpleAudioEngine.m */,
 			);
 			name = CocosDenshion;
-			sourceTree = "<group>";
-		};
-		59A072F113A4AB6600DCC320 /* cocoslive */ = {
-			isa = PBXGroup;
-			children = (
-				59A072F213A4AB6600DCC320 /* CLScoreServerPost.h */,
-				59A072F313A4AB6600DCC320 /* CLScoreServerPost.m */,
-				59A072F513A4AB6600DCC320 /* CLScoreServerRequest.h */,
-				59A072F613A4AB6600DCC320 /* CLScoreServerRequest.m */,
-				59A072F813A4AB6600DCC320 /* cocoslive.h */,
-				59A072F913A4AB6600DCC320 /* cocoslive.m */,
-			);
-			name = cocoslive;
 			sourceTree = "<group>";
 		};
 		59A072FB13A4AB6600DCC320 /* FontLabel */ = {
@@ -1047,9 +1024,6 @@
 				59A072EA13A4AB6600DCC320 /* CDOpenALSupport.m in Sources */,
 				59A072ED13A4AB6600DCC320 /* CocosDenshion.m in Sources */,
 				59A072F013A4AB6600DCC320 /* SimpleAudioEngine.m in Sources */,
-				59A072F413A4AB6600DCC320 /* CLScoreServerPost.m in Sources */,
-				59A072F713A4AB6600DCC320 /* CLScoreServerRequest.m in Sources */,
-				59A072FA13A4AB6600DCC320 /* cocoslive.m in Sources */,
 				59A072FE13A4AB6600DCC320 /* FontLabel.m in Sources */,
 				59A0730113A4AB6600DCC320 /* FontLabelStringDrawing.m in Sources */,
 				59A0730413A4AB6600DCC320 /* FontManager.m in Sources */,
@@ -1233,6 +1207,7 @@
 				59A073AA13A4AB7A00DCC320 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
