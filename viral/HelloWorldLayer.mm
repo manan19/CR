@@ -52,15 +52,11 @@ enum {
 		// enable touches
 		self.isTouchEnabled = YES;
 		
-		// enable accelerometer
-		self.isAccelerometerEnabled = YES;
-		
 		CGSize screenSize = [CCDirector sharedDirector].winSize;
 		CCLOG(@"Screen width %0.2f screen height %0.2f",screenSize.width,screenSize.height);
 		
 		// Define the gravity vector.
-		b2Vec2 gravity;
-		gravity.Set(0.0f, -10.0f);
+		b2Vec2 gravity(0,0);
 		
 		// Do we want to let bodies sleep?
 		// This will speed up the physics simulation
@@ -95,35 +91,38 @@ enum {
 		
 		// Define the ground box shape.
 		b2PolygonShape groundBox;		
-		
+		b2Fixture *fixture;
+        
 		// bottom
 		groundBox.SetAsEdge(b2Vec2(0,0), b2Vec2(screenSize.width/PTM_RATIO,0));
-		groundBody->CreateFixture(&groundBox,0);
-		
+		fixture = groundBody->CreateFixture(&groundBox,0);
+		fixture->SetRestitution(1.0f);
+        fixture->SetFriction(0);
+        
 		// top
 		groundBox.SetAsEdge(b2Vec2(0,screenSize.height/PTM_RATIO), b2Vec2(screenSize.width/PTM_RATIO,screenSize.height/PTM_RATIO));
-		groundBody->CreateFixture(&groundBox,0);
-		
+		fixture = groundBody->CreateFixture(&groundBox,0);
+		fixture->SetRestitution(1.0);
+        fixture->SetFriction(0);
+
 		// left
 		groundBox.SetAsEdge(b2Vec2(0,screenSize.height/PTM_RATIO), b2Vec2(0,0));
-		groundBody->CreateFixture(&groundBox,0);
-		
-		// right
+        fixture = groundBody->CreateFixture(&groundBox,0);
+		fixture->SetRestitution(1.0);
+        fixture->SetFriction(0);
+
+        // right
 		groundBox.SetAsEdge(b2Vec2(screenSize.width/PTM_RATIO,screenSize.height/PTM_RATIO), b2Vec2(screenSize.width/PTM_RATIO,0));
-		groundBody->CreateFixture(&groundBox,0);
-		
+        fixture = groundBody->CreateFixture(&groundBox,0);
+		fixture->SetRestitution(1.0);
+        fixture->SetFriction(0);
 		
 		//Set up sprite
 		
 		CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"blocks.png" capacity:150];
 		[self addChild:batch z:0 tag:kTagBatchNode];
 		
-		[self addNewSpriteWithCoords:ccp(screenSize.width/2, screenSize.height/2)];
-		
-		CCLabelTTF *label = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
-		[self addChild:label z:0];
-		[label setColor:ccc3(0,0,255)];
-		label.position = ccp( screenSize.width/2, screenSize.height-50);
+		[self addNewCircleAtCoords:ccp(screenSize.width/2, screenSize.height/2) andRadius:0.3f];
 		
 		[self schedule: @selector(tick:)];
 	}
@@ -148,19 +147,19 @@ enum {
 
 }
 
--(void) addNewSpriteWithCoords:(CGPoint)p
+-(void) addNewCircleAtCoords:(CGPoint)p andRadius:(float32)radius
 {
 	CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
-	CCSpriteBatchNode *batch = (CCSpriteBatchNode*) [self getChildByTag:kTagBatchNode];
-	
-	//We have a 64x64 sprite sheet with 4 different 32x32 images.  The following code is
-	//just randomly picking one of the images
-	int idx = (CCRANDOM_0_1() > .5 ? 0:1);
-	int idy = (CCRANDOM_0_1() > .5 ? 0:1);
-	CCSprite *sprite = [CCSprite spriteWithBatchNode:batch rect:CGRectMake(32 * idx,32 * idy,32,32)];
-	[batch addChild:sprite];
-	
-	sprite.position = ccp( p.x, p.y);
+//	CCSpriteBatchNode *batch = (CCSpriteBatchNode*) [self getChildByTag:kTagBatchNode];
+//	
+//	//We have a 64x64 sprite sheet with 4 different 32x32 images.  The following code is
+//	//just randomly picking one of the images
+//	int idx = (CCRANDOM_0_1() > .5 ? 0:1);
+//	int idy = (CCRANDOM_0_1() > .5 ? 0:1);
+//	CCSprite *sprite = [CCSprite spriteWithBatchNode:batch rect:CGRectMake(32 * idx,32 * idy,32,32)];
+//	[batch addChild:sprite];
+//	
+//	sprite.position = ccp( p.x, p.y);
 	
 	// Define the dynamic body.
 	//Set up a 1m squared box in the physics world
@@ -168,19 +167,22 @@ enum {
 	bodyDef.type = b2_dynamicBody;
 
 	bodyDef.position.Set(p.x/PTM_RATIO, p.y/PTM_RATIO);
-	bodyDef.userData = sprite;
+	//bodyDef.userData = sprite;
 	b2Body *body = world->CreateBody(&bodyDef);
 	
-	// Define another box shape for our dynamic body.
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(.5f, .5f);//These are mid points for our 1m box
-	
+    b2CircleShape circle;
+    circle.m_radius = radius;
+    
 	// Define the dynamic body fixture.
 	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;	
+	fixtureDef.shape = &circle;	
 	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
+	fixtureDef.friction = 0.0f;
+    fixtureDef.restitution = 1.0f;
+    fixtureDef.filter.groupIndex = -1;
 	body->CreateFixture(&fixtureDef);
+    
+    body->ApplyForce( b2Vec2(100,100), body->GetPosition());
 }
 
 
@@ -199,16 +201,28 @@ enum {
 	// generally best to keep the time step and iterations fixed.
 	world->Step(dt, velocityIterations, positionIterations);
 
-	
+	world->ClearForces();
+    
 	//Iterate over the bodies in the physics world
 	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
 	{
-		if (b->GetUserData() != NULL) {
-			//Synchronize the AtlasSprites position and rotation with the corresponding body
-			CCSprite *myActor = (CCSprite*)b->GetUserData();
-			myActor.position = CGPointMake( b->GetPosition().x * PTM_RATIO, b->GetPosition().y * PTM_RATIO);
-			myActor.rotation = -1 * CC_RADIANS_TO_DEGREES(b->GetAngle());
-		}	
+        if(b->GetType() != b2_dynamicBody)
+            continue;
+        b2CircleShape* circle = (b2CircleShape*)b->GetFixtureList()->GetShape();
+        float32 r = circle->m_radius;
+        b->DestroyFixture(b->GetFixtureList());
+        
+        b2CircleShape newcircle;
+        newcircle.m_radius = r>=1 ? 1 :r+0.01f;
+        
+        // Define the dynamic body fixture.
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &newcircle;	
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.0f;
+        fixtureDef.restitution = 1.0f;
+        fixtureDef.filter.groupIndex = -1;
+        b->CreateFixture(&fixtureDef);
 	}
 }
 
@@ -220,28 +234,8 @@ enum {
 		
 		location = [[CCDirector sharedDirector] convertToGL: location];
 		
-		[self addNewSpriteWithCoords: location];
+		[self addNewCircleAtCoords:location andRadius:0.3f];
 	}
-}
-
-- (void)accelerometer:(UIAccelerometer*)accelerometer didAccelerate:(UIAcceleration*)acceleration
-{	
-	static float prevX=0, prevY=0;
-	
-	//#define kFilterFactor 0.05f
-#define kFilterFactor 1.0f	// don't use filter. the code is here just as an example
-	
-	float accelX = (float) acceleration.x * kFilterFactor + (1- kFilterFactor)*prevX;
-	float accelY = (float) acceleration.y * kFilterFactor + (1- kFilterFactor)*prevY;
-	
-	prevX = accelX;
-	prevY = accelY;
-	
-	// accelerometer values are in "Portrait" mode. Change them to Landscape left
-	// multiply the gravity by 10
-	b2Vec2 gravity( -accelY * 10, accelX * 10);
-	
-	world->SetGravity( gravity );
 }
 
 // on "dealloc" you need to release all your retained objects
